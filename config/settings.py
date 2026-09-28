@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/6.1/ref/settings/
 """
 
 from pathlib import Path
+from django.conf.global_settings import AUTH_USER_MODEL
 from dotenv import load_dotenv
 import os 
 
@@ -134,3 +135,5 @@ MAILERS = {
         'BACKEND': 'django.core.mail.backends.console.EmailBackend',
     },
 }
+
+AUTH_USER_MODEL='EntreprisesApp.Utulisateur'
