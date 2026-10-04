@@ -1,4 +1,4 @@
-from random import choice
+from random import choice, choices
 from django.db import models
 from EntreprisesApp.models import Entreprise
 
@@ -17,14 +17,14 @@ class Expedition(models.Model):
         )
     statut=models.CharField(
         max_length=50,
-        choice=[
+        choices=[
             ('publie','Publie'),
             ('attribuee','Attribuee'),
             ('en_cours','En_Cours'),
             ('licree','Livree'),
             ('annulee--defaut publiee','Annulee--Defaut Publiee'),
         ],
-        defualt='publie'
+        default='publie'
         )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
