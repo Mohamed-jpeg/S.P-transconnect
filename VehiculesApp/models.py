@@ -1,11 +1,13 @@
 from django.db.models.fields import CharField
 from django.db import models
 from EntreprisesApp.models import Entreprise
+from django.core.validators import MinValueValidator ,MinLengthValidator
+
 
 # Create your models here.
 class Vehicule(models.Model):
     immatriculation=models.CharField(max_length=20,unique=True)
-    capacite_kg=models.PositiveIntegerField()
+    capacite_kg=models.PositiveIntegerField(validators=[MinValueValidator(1,"La capacite deoit etre superieur a 0 kg"), ])
     entreprise=models.ForeignKey(
         Entreprise,
         on_delete=models.CASCADE,

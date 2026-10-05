@@ -40,4 +40,4 @@ class Offre(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"Offre #{self.id} - {self.prix} TND ({self.statut})"
+        return f"Offre #{self.delai_jours} - {self.prix} TND ({self.statut})"
