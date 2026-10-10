@@ -1,3 +1,4 @@
+from django.core import validators
 from django.db import models
 from ExpeditionsApp.models import Expedition
 from EntreprisesApp.models import Entreprise
@@ -6,8 +7,8 @@ from VehiculesApp.models import Vehicule
 
 class Offre(models.Model):
 
-    prix = models.DecimalField(max_digits=10, decimal_places=2)
-    delai_jours = models.PositiveIntegerField()
+    prix = models.DecimalField(max_digits=10, decimal_places=2,validators=[validators.MinValueValidator(1)])
+    delai_jours = models.PositiveIntegerField(validators=[validators.MinValueValidator(1)])
     statut = models.CharField(
         max_length=20,
         choices=[

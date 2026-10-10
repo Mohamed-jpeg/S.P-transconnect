@@ -10,18 +10,35 @@ def vallidatee(value):
     if not value.endswith('@gmail.com'):
         raise ValidationError("L'adresse mail doit se terminer par '@gmail.com'.")
 
-class Utulisateur(AbstractUser):
+def generate_user_id():
+    """Génère l'identifiant au format AAuserNN (ex: 26user00)"""
+    current_year_str = datetime.date.today().strftime("%y")
+    prefix = f"{current_year_str}user"
+    
+    last_user = Utilisateur.objects.filter(user_id__startswith=prefix).order_by('-user_id').first()
+    
+    if last_user:
+        try:
+            last_counter = int(last_user.user_id[len(prefix):])
+            next_counter = last_counter + 1
+        except ValueError:
+            next_counter = 0
+    else:
+        next_counter = 0
+        
+    return f"{prefix}{next_counter:02d}"
+
+class Utilisateur(AbstractUser):
     user_id = models.CharField(
         max_length=8, 
         primary_key=True, 
+        default=generate_user_id,
         editable=False,
-        validatrors=[RegexValidator(
+        validators=[RegexValidator(
             regex=r"^\d{2}user\d{2}$",
-            message=(
-                "Format invalide. Format attendu : AAuserNN (2 chiffres pour l'année,"
-                " 'user', 2 chiffres pour le compteur, ex. 26user00)." ),
-                    )]
-        )
+            message="Format invalide. Format attendu : AAuserNN (2 chiffres pour l'année, 'user', 2 chiffres pour le compteur, ex. 26user00)."
+        )]
+    )
     email = models.EmailField(
         unique=True,
         validators=[vallidatee],
@@ -31,12 +48,19 @@ class Utulisateur(AbstractUser):
         max_length=20,
         choices=[
             ('chargeur', 'Chargeur'),
-            ('trasporteur', 'Transporteur'),
+            ('transporteur', 'Transporteur'),
             ('administration', 'Administration'),
         ]
     )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+
+
+
+
+
+
 
 
 matricule_fiscale_validators = RegexValidator(
@@ -47,7 +71,7 @@ matricule_fiscale_validators = RegexValidator(
 
 class Entreprise(models.Model):
     raison_sociale = models.CharField(max_length=200, null=False)
-    matricule_fiscale = models.CharField(
+    matricule_fiscal = models.CharField(
         max_length=17,
         null=False,
         unique=True,
