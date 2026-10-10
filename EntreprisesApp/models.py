@@ -11,8 +11,21 @@ def vallidatee(value):
         raise ValidationError("L'adresse mail doit se terminer par '@gmail.com'.")
 
 class Utulisateur(AbstractUser):
-    user_id = models.CharField(max_length=8, primary_key=True, editable=False)
-    email = models.EmailField(unique=True)
+    user_id = models.CharField(
+        max_length=8, 
+        primary_key=True, 
+        editable=False,
+        validatrors=[RegexValidator(
+            regex=r"^\d{2}user\d{2}$",
+            message=(
+                "Format invalide. Format attendu : AAuserNN (2 chiffres pour l'année,"
+                " 'user', 2 chiffres pour le compteur, ex. 26user00)." ),
+                    )]
+        )
+    email = models.EmailField(
+        unique=True,
+        validators=[vallidatee],
+        )
     telephone = models.CharField(max_length=15, null=True, blank=True)
     role = models.CharField(
         max_length=20,
@@ -39,7 +52,7 @@ class Entreprise(models.Model):
         null=False,
         unique=True,
         blank=False,
-        validators=[matricule_fiscale_validators]
+        validators=[matricule_fiscale_validators],
     )
 
     adresse = models.TextField(validators=[MinLengthValidator(20,"ladresse doit etre superieur a 20 charactere")])
