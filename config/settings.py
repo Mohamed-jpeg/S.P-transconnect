@@ -136,4 +136,4 @@ MAILERS = {
     },
 }
 
-AUTH_USER_MODEL='EntreprisesApp.Utulisateur'
+AUTH_USER_MODEL = 'EntreprisesApp.Utilisateur'

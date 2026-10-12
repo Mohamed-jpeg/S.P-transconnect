@@ -1,4 +1,5 @@
-from django.core.validators import MinLengthValidator, RegexValidator
+from decimal import Decimal
+from django.core.validators import MinLengthValidator, RegexValidator,MinValueValidator
 from django.db import models
 from django.core.exceptions import ValidationError
 from django.utils import timezone
@@ -18,7 +19,7 @@ class Expedition(models.Model):
         )
     ville_depart=models.CharField(max_length=100)
     ville_arrivee=models.CharField(max_length=100)
-    poids_kg=models.DecimalField(max_digits=8,decimal_places=2, validators=[MinLengthValidator(=1)])
+    poids_kg=models.DecimalField(max_digits=8,decimal_places=2, validators=[MinValueValidator(Decimal('0.01'))])
     date_souhaitee=models.DateField()
     description=models.TextField(blank=True,null=True)
     
@@ -45,16 +46,12 @@ class Expedition(models.Model):
     def __str__(self):
         return f"Expedition {self.reference} - {self.statut}"
 
-    def clean(self):
-        super().clean()
-        if self.entreprise_id and self.entreprise.type_entreprise != 'chargeur':
-            raise ValidationError({'entreprise':'une expedition ne peut etre que par une entreprise de type chargeur'})
         
     @classmethod
     def _generate_reference(cls):
         annee = timezone.now().strftime('%y')
         dernier = cls.objects.filter(
-            reference__startswith=f"EXP_{annee}_"
+            reference__startswith=f"EXP-{annee}-"
         ).order_by('-reference').first()
 
         compteur = int(dernier.reference[-5:]) + 1 if dernier else 1
@@ -68,6 +65,11 @@ class Expedition(models.Model):
             self.reference = self._generate_reference()
         self.full_clean()
         super().save(*args,**kwargs)
+
+    def clean(self):
+            super().clean()
+            if self.entreprise_id and self.entreprise.type_entreprise != 'chargeur':
+                raise ValidationError({'entreprise':'une expedition ne peut etre que par une entreprise de type chargeur'})
 
 
     

@@ -57,7 +57,7 @@ class Migration(migrations.Migration):
                 ('type_entreprise', models.CharField(choices=[('chargeur', 'Chargeur'), ('transporteur', 'Transporteur')], max_length=100)),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
-                ('gerant', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, related_name='entreprise', to=settings.AUTH_USER_MODEL)),
+                ('gerant', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, related_name='entreprise', to='EntreprisesApp.utulisateur')),
             ],
         ),
     ]

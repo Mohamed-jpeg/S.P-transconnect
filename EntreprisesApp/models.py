@@ -1,8 +1,9 @@
 from django.contrib.auth.models import AbstractUser
 from django.core import validators
 from django.db import models
+from django.db.utils import OperationalError, ProgrammingError
 from django.core.validators import MinLengthValidator ,RegexValidator,ValidationError
-
+import datetime
 
 def vallidatee(value):
     if not value:
@@ -15,7 +16,14 @@ def generate_user_id():
     current_year_str = datetime.date.today().strftime("%y")
     prefix = f"{current_year_str}user"
     
-    last_user = Utilisateur.objects.filter(user_id__startswith=prefix).order_by('-user_id').first()
+    try:
+        last_user = Utilisateur.objects.filter(
+            user_id__startswith=prefix
+        ).order_by('-user_id').first()
+    except (OperationalError, ProgrammingError) as error:
+        if "no such table" not in str(error).lower():
+            raise
+        last_user = None
     
     if last_user:
         try:
@@ -92,7 +100,7 @@ class Entreprise(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     
     gerant = models.OneToOneField(
-        Utulisateur,
+        Utilisateur,
         on_delete=models.CASCADE,
         related_name='entreprise'
     )
