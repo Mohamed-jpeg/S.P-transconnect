@@ -66,11 +66,6 @@ class Utilisateur(AbstractUser):
 
 
 
-
-
-
-
-
 matricule_fiscale_validators = RegexValidator(
     regex=r'^\d{7}[/ -]?[A-Za-z][/ -]?[ABDNPEabdnpe][/ -]?[MPCNEmpcne][/ -]?\d{3}$',
     message="Format invalide. format attendu : 7 chiffres, 1 lettres ( clé de controle), "

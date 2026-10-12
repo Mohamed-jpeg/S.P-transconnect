@@ -1,9 +1,9 @@
 from django.core import validators
 from django.db import models
 from django.db.models.base import ValidationError
-from ExpeditionsApp.models import Expedition
 from EntreprisesApp.models import Entreprise
 from VehiculesApp.models import Vehicule
+from ExpeditionsApp.models import Expedition
 
 
 
@@ -44,13 +44,14 @@ class Offre(models.Model):
         return f"Offre #{self.delai_jours} - {self.prix} TND ({self.statut})"
     
     def save(self,*args,**kwargs):
-        self.full_clean()
-        super().save(*args,**kwargs)
-
+        
         if self.statut=="acceptee":
             self.expedition.statut="attribuee"
             self.expedition.save()
             self.expedition.offres.exclude(pk=self).filter(statut="proposee").update(statut="refusee")
+        
+        self.full_clean()
+        super().save(*args,**kwargs)
     
     def clean(self):
         super.clean()
@@ -68,6 +69,14 @@ class Offre(models.Model):
             raise ValidationError("Cette expédition n'est plus ouverte aux offres.")
 
         #4 honesstly i didnt know how to do it even with ai yit is hard 
+        if (self.pk and self.expedition.expedition_id and self.transporteur.transporteur_id and self.statut=='proposee'):
+            offres_existantes=Offre.objects.filter(expedition_id=self.expedition.expedition_id,transporteur_id=self.transporteur.transporteur_id
+            ,statut='proposee')
+            if self.pk:
+                offres_existantes=offres_existantes.exclude(pk=self.pk)
+            if offres_existantes.exists():
+                raise ValidationError('Cette entreprise a deja une offre active pour cette expedition')
+
 
         #6
         if self.vehicule_id and not self.pk:#self.pk==primary key 

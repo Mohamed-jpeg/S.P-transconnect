@@ -16,7 +16,11 @@ class Expedition(models.Model):
                "Format invalide. Format attendu : EXP-AA-NNNNN (EXP, 2 chiffres pour"
                 " l'année, un tiret, 5 chiffres pour le compteur, ex. EXP-26-00001)."),
                     )]
-        )
+    )
+
+    def __str__(self):
+        return f"Expedition {self.reference}"
+    
     ville_depart=models.CharField(max_length=100)
     ville_arrivee=models.CharField(max_length=100)
     poids_kg=models.DecimalField(max_digits=8,decimal_places=2, validators=[MinValueValidator(Decimal('0.01'))])
