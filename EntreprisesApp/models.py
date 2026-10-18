@@ -36,6 +36,7 @@ def generate_user_id():
         
     return f"{prefix}{next_counter:02d}"
 
+
 class Utilisateur(AbstractUser):
     user_id = models.CharField(
         max_length=8, 
@@ -63,6 +64,8 @@ class Utilisateur(AbstractUser):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    def __str__(self):
+        return f"Utulisateur {self.user_id}"
 
 
 
@@ -99,3 +102,6 @@ class Entreprise(models.Model):
         on_delete=models.CASCADE,
         related_name='entreprise'
     )
+
+    def __str__(self):
+        return f"Entreprise {self.matricule_fiscal}"

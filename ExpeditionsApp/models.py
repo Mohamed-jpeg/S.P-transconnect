@@ -40,7 +40,7 @@ class Expedition(models.Model):
             ('attribuee','Attribuee'),
             ('en_cours','En_Cours'),
             ('licree','Livree'),
-            ('annulee--defaut publiee','Annulee--Defaut Publiee'),
+            ('annulee--defaut publie','Annulee--Defaut Publie'),
         ],
         default='publie'
         )
@@ -62,7 +62,7 @@ class Expedition(models.Model):
         
         if compteur > 99999:
             raise ValidationError("Limite de références atteinte.")
-        return f"EXP_{annee}_{compteur:05d}"
+        return f"EXP-{annee}-{compteur:05d}"
     
     def save(self,*args,**kwargs):
         if not self.reference:
