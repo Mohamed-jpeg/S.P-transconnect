@@ -48,6 +48,7 @@ class Utilisateur(AbstractUser):
             message="Format invalide. Format attendu : AAuserNN (2 chiffres pour l'année, 'user', 2 chiffres pour le compteur, ex. 26user00)."
         )]
     )
+
     email = models.EmailField(
         unique=True,
         validators=[vallidatee],
@@ -61,6 +62,7 @@ class Utilisateur(AbstractUser):
             ('administration', 'Administration'),
         ]
     )
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
