@@ -1,5 +1,7 @@
 from django.contrib import admin
 from .models import Entreprise, Utilisateur
+admin.site.site_header="TransConnect-Administration"
+admin.site.site_title="TransConnect-Administration"
 
 # Register your models here.
 class EntrepriseAdmin(admin.ModelAdmin):
@@ -9,6 +11,17 @@ class EntrepriseAdmin(admin.ModelAdmin):
         'created_at',
         "updated_at",
         "matricule_fiscal",
+    )
+    fieldsets = (
+        ("Entreprise", {"fields": ("raison_sociale", "type_entreprise", "matricule_fiscal", "adresse")}),
+        (
+            "Gérant",
+            {"fields": ("gerant",)},
+        ),
+        (
+            "Horodatage",
+            {"fields": ("created_at", "updated_at"),"classes": ("collapse",),},
+        ),
     )
 
 class UtilisateurAdmin(admin.ModelAdmin):
@@ -23,7 +36,14 @@ class UtilisateurAdmin(admin.ModelAdmin):
         "created_at",
         "updated_at",
     )
-
+    fieldsets = (
+        ("Utilisateur", {"fields": ("username", "first_name", "last_name", "email", "role", "telephone")}),
+        (
+            "Horodatage",
+            {"fields": ("user_id", "date_joined", "last_login", "created_at", "updated_at"),"classes": ("collapse",),},
+        ),
+    )
+    
 
 
 
