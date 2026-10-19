@@ -22,5 +22,22 @@ class ExpeditionAdmin(admin.ModelAdmin): # it will surcharge admin per default t
         "ville_arrivee",
         "entreprise_raison_sociale",
     )
+    fieldsets=(
+        (
+            "Expedition",
+            {"fields":("reference","entreprise","description")}
+        ),
+        (
+            "Iteraire et Produit",
+            {"fields":("ville_depart","ville_arrivee","poids_kg","date_souhaitee")}
+        ),
+        (
+            "Statut et Horaire",
+            {
+                "field":("statut","created_at","updated_at"),
+                "classes":("collapse")
+            }
+        )
+    )
 
 admin.site.register(Expedition, ExpeditionAdmin)  #admin.site.register( nom du model , class de personalisation )
