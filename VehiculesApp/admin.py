@@ -14,9 +14,29 @@ class VehiculeAdmin(admin.ModelAdmin):
         "updated_at",
     )
     search_fields=(
-        "reference",
-        "poids_kg",
+        "immatriculation",
+        "capacite_kg",
+        'entreprise',
+        'type_vehicule',
+        'disponible',
     )
+    list_editable=(
+       "capacite_kg",
+        'entreprise',
+        'type_vehicule',
+        'disponible',
+    )
+    ordering = ('immatriculation',)
+    list_per_page = 25
 
+    fieldsets=(
+        ("information vehicule",{
+            'fields' : ('immatriculation','type_vehicule','capacite_kg')
+        }),
+        ("Rattachement et Suivi",{
+            'fields':('entreprise','created_at','updated_at')
+        })
+    )
+    autocomplete_fields = ('entreprise',)
 
 admin.site.register(Vehicule , VehiculeAdmin)

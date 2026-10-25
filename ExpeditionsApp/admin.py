@@ -1,9 +1,12 @@
 from turtle import title
 from typing import override
 
+from django.contrib import messages
+from django.utils.html import format_html
 from django.contrib import admin
 from .models import Expedition
 from django.utils import timezone
+from OffresApp.models import Offre
 
 #Register your models here.
 class EnRetarFilter(admin.SimpleListFilter):
@@ -23,8 +26,18 @@ class EnRetarFilter(admin.SimpleListFilter):
 
 
 
+class OffreInline(admin.TabularInline):
+    model = Offre
+    extra = 0
+    readonly_fields = ('transporteur', 'vehicule', 'prix', 'delai_jours', 'statut', 'date_proposition', 'created_at', 'updated_at')
+    can_delete = False
+
+    def has_add_permission(self, request, obj=None):
+        return False
 
 
+
+@admin.register(Expedition)
 class ExpeditionAdmin(admin.ModelAdmin): # it will surcharge admin per default thats why it enherit the admin
     list_display = ('reference', 'ville_depart', 'ville_arrivee', 'statut')
     list_filter=(
@@ -62,6 +75,57 @@ class ExpeditionAdmin(admin.ModelAdmin): # it will surcharge admin per default t
             }
         )
     )
+    list_editable=(
+            'ville_depart',
+            'ville_arrivee',
+            'description',
+            'statut'
+    )
+    ordering = ('-created_at',)
+    date_hierarchy = 'date_souhaitee'
+    list_per_page = 25
+    inlines = [OffreInline]
+    actions = ['cloturer_expeditions']
+
+
+    @admin.action(description="Clôturer les expéditions sélectionnées")
+    def cloturer_expeditions(self, request, queryset):
+        count = 0
+        for expedition in queryset:
+            # Traiter uniquement les expéditions avec le statut en_cours
+            if expedition.statut == 'en_cours':
+                expedition.statut = 'terminee'
+                try:
+                    expedition.full_clean()
+                    expedition.save()
+                    count += 1
+                except Exception:
+                    pass
+        
+        self.message_user(
+            request,
+            f"{count} expédition(s) ont été clôturée(s) avec succès.",
+            level=messages.SUCCESS
+        )
+
+
+    @admin.display(description="statut")
+    def statut_color(self,obj):
+        colors={
+            'publie': '#F0AD4E',
+            'en_cours': '#0275D8',
+            'attribuee': '#5BC0DE',
+            'livree': '#5CB85C',
+            'annulee': '#D9534F',
+        }
+        return format_html(
+            '<span style="color: white; background: {}; padding:3px 8px; border-radius: 4px;">{}</span>',
+            colors.get(obj.statut, '#999'),
+            obj.get_statut_display(),
+        )
+    
+    
+
 
 
 

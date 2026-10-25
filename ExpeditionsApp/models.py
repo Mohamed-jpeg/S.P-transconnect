@@ -39,7 +39,7 @@ class Expedition(models.Model):
             ('publie','Publie'),
             ('attribuee','Attribuee'),
             ('en_cours','En_Cours'),
-            ('licree','Livree'),
+            ('livree','Livree'),
             ('annulee--defaut publie','Annulee--Defaut Publie'),
         ],
         default='publie'
