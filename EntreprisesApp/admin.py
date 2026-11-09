@@ -2,7 +2,7 @@ from pickle import EMPTY_DICT
 
 from django.contrib import admin
 from .models import Entreprise, Utilisateur 
-from VehiculesApp import Vehicule
+from VehiculesApp.models import Vehicule
 admin.site.site_header="TransConnect-Administration"
 admin.site.site_title="TransConnect-Administration"
 

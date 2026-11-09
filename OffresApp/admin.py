@@ -6,7 +6,14 @@ from django.http import HttpResponse
 
 # Register your models here.
 class OffresAdmin(admin.ModelAdmin):
-    list_display=('prix','delai_jours','statut','date_proposition')
+    list_display=(
+        "statut",
+        'delai_jours',
+        'date_proposition',
+        'expedition',
+        'transporteur',
+        'vehicule',
+        )
     list_filter=(
         "prix",
         "delai_jours",
@@ -27,10 +34,9 @@ class OffresAdmin(admin.ModelAdmin):
         'transporteur',
         'vehicule',
     )
+    list_display_links=('statut',)
     list_editable=(
-        "statut",
         'delai_jours',
-        'date_proposition',
         'expedition',
         'transporteur',
         'vehicule',
@@ -66,7 +72,7 @@ class OffresAdmin(admin.ModelAdmin):
             obj.get_statut_display(),
         )
 
-        @admin.action(description="Exporter la sélection en CSV")
+    @admin.action(description="Exporter la sélection en CSV")
     def exporter_offres_csv(self, modeladmin, request, queryset):
         response = HttpResponse(content_type='text/csv')
         response['Content-Disposition'] = 'attachment; filename="offres.csv"'

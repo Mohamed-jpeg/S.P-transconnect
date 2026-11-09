@@ -22,7 +22,6 @@ class VehiculeAdmin(admin.ModelAdmin):
     )
     list_editable=(
        "capacite_kg",
-        'entreprise',
         'type_vehicule',
         'disponible',
     )

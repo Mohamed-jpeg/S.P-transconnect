@@ -39,7 +39,8 @@ class OffreInline(admin.TabularInline):
 
 @admin.register(Expedition)
 class ExpeditionAdmin(admin.ModelAdmin): # it will surcharge admin per default thats why it enherit the admin
-    list_display = ('reference', 'ville_depart', 'ville_arrivee', 'statut')
+    list_display = ('reference', 'ville_depart', 'ville_arrivee', 'statut','description',
+            'statut')
     list_filter=(
         "ville_depart",
         "ville_arrivee",
@@ -129,4 +130,4 @@ class ExpeditionAdmin(admin.ModelAdmin): # it will surcharge admin per default t
 
 
 
-admin.site.register(Expedition, ExpeditionAdmin)  #admin.site.register( nom du model , class de personalisation )
+#admin.site.register(Expedition, ExpeditionAdmin)  #admin.site.register( nom du model , class de personalisation )
