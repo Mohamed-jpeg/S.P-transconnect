@@ -6,15 +6,10 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>Liste des expéditions</h1>
-    <ul>
-
-            <li>
-                
-                    {{ expedition.reference }} - {{ expedition.ville_depart }} à {{ expedition.ville_arrivee }}
-                
-            </li>
-
-    </ul>
+    <h1>Supprimer  expéditions  {{expedition }}</h1>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit">Confirmer</button>
+    </form>
 </body>
 </html>

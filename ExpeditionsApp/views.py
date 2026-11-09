@@ -2,6 +2,7 @@ from django.shortcuts import render
 from .models import Expedition
 from django.http import HttpResponse
 from django.views.generic import ListView ,DetailView , DeleteView
+from django.urls import reverse_lazy
 
 
 # Create your views here.
@@ -24,7 +25,7 @@ def detail_Expedition(request,pk):
 class ExeditionDetailsView(DetailView):
     model=Expedition
     template_name="expedition/detail.html"
-    context_object_name = 'expeditions'
+    context_object_name = 'expedition'
 
 def list_expeditions(request):
     expedition = Expedition.objects.filter(statut='pubile')
@@ -35,11 +36,9 @@ class ExpeditionListView( ListView ):
     template_name="expedition/list.html"
     context_object_name = 'expeditions'
 
-def Delete_Expedition(request):
-    expeditions = Expedition.objects.all()
-    return render(request , "expedition/delete.html",{'expeditions':expeditions})
 
 class ExpeditionDeleteView(DeleteView):
     model=Expedition
     template_name='expedition/delete.html'
-    contexte_object_name='expeditions'
+    contexte_object_name='expedition'
+    success_url = reverse_lazy('expedition:list_Expeditions')
