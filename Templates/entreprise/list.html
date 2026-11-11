@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liste des Entreprises</title>
+</head>
+<body>
+    <h1>Liste des Entreprises</h1>
+
+    <p>
+        <a href="{% url 'entreprise:Create_Entreprises' %}">Créer une entreprise</a>
+
+    </p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>raison_sociale</th>
+                <th>matricule_fiscal </th>
+                <th>Entreprise</th>
+                <th>Adresse</th>
+                <th>type_entreprise</th>
+                <th>gerant</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for entreprise in entreprises %}
+            <tr>
+                <td>{{ entreprise.raison_sociale }}</td>
+                <td>{{ entreprise.matricule_fiscal }}</td>
+                <td>{{ entreprise.entreprise }}</td>
+                <td>{{ entreprise.adresse }}</td>
+                <td>{{ entreprise.type_entreprise }}</td>
+                <td>{{ entreprise.gerant }}</td>
+                <td>
+                    <form method="get" action="{% url 'entreprise:Update_Entreprise' entreprise.pk %}">
+                        <button type="submit">Modifier</button>
+                    </form>
+                    <form method="get" action="{% url 'entreprise:Delete_Entreprise' entreprise.pk %}">
+                        <button type="submit">Supprimer</button>
+                    </form>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="8">Aucune vehiclue trouvée.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

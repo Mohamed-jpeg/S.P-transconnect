@@ -20,10 +20,12 @@ from django.urls import path
 import ExpeditionsApp 
 import VehiculesApp
 import OffresApp
+import EntreprisesApp
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('expedition/',include('ExpeditionsApp.urls') ),
     path('vehicule/',include('VehiculesApp.urls') ),
-    path('offre/',include('OffresApp.urls') )
+    path('offre/',include('OffresApp.urls') ),
+    path('entreprise/',include('EntreprisesApp.urls') ),
 ]

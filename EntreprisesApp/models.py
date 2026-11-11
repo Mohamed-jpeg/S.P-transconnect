@@ -96,14 +96,14 @@ class Entreprise(models.Model):
         ]
     )
     
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-    
     gerant = models.OneToOneField(
         Utilisateur,
         on_delete=models.CASCADE,
         related_name='entreprise'
     )
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return f"Entreprise {self.matricule_fiscal}"
