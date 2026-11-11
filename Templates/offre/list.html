@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liste des Offre</title>
+</head>
+<body>
+    <h1>Liste des Offre</h1>
+
+    <p>
+        <a href="{% url 'offre:Create_Offre' %}">Créer un offre</a>
+
+    </p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>prix</th>
+                <th>delai_jours (kg)</th>
+                <th>statut</th>
+                <th>date_proposition </th>
+                <th>expedition</th>
+                <th>transporteur</th>
+                <th>vehicule</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for offre in offres %}
+            <tr>
+                <td>{{ offre.prix }}</td>
+                <td>{{ offre.delai_jours }}</td>
+                <td>{{ offre.statut }}</td>
+                <td>{{ offre.expedition }}</td>
+                <td>{{ offre.transporteur }}</td>
+                <td>{{ offre.vehicule }}</td>
+                <td>
+                    <form method="get" action="{% url 'offre:Update_Offre' offre.pk %}">
+                        <button type="submit">Modifier</button>
+                    </form>
+                    <form method="get" action="{% url 'offre:Delete_Offre' offre.pk %}">
+                        <button type="submit">Supprimer</button>
+                    </form>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="8">Aucune vehiclue trouvée.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

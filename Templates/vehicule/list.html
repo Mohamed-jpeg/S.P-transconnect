@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liste des Vehicles</title>
+</head>
+<body>
+    <h1>Liste des Vehiclues</h1>
+
+    <p>
+        <a href="{% url 'vehicule:Create_Vehicules' %}">Créer un véhicule</a>
+
+    </p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Immatriculation</th>
+                <th>Capacite (kg)</th>
+                <th>Entreprise</th>
+                <th>Type Vehicule </th>
+                <th>Disponible</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for vehicule in vehicules %}
+            <tr>
+                <td>{{ vehicule.immatriculation }}</td>
+                <td>{{ vehicule.capacite_kg }}</td>
+                <td>{{ vehicule.entreprise }}</td>
+                <td>{{ vehicule.type_vehicule }}</td>
+                <td>{{ vehicule.disponible }}</td>
+                <td>
+                    <form method="get" action="{% url 'vehicule:Update_Vehicule' vehicule.pk %}">
+                        <button type="submit">Modifier</button>
+                    </form>
+                    <form method="get" action="{% url 'vehicule:Delete_Vehicule' vehicule.pk %}">
+                        <button type="submit">Supprimer</button>
+                    </form>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="8">Aucune vehiclue trouvée.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

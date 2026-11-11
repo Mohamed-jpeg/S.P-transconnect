@@ -18,8 +18,12 @@ from django.contrib import admin
 from django.urls import path , include
 from django.urls import path
 import ExpeditionsApp 
+import VehiculesApp
+import OffresApp
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('expedition/',include('ExpeditionsApp.urls') )
+    path('expedition/',include('ExpeditionsApp.urls') ),
+    path('vehicule/',include('VehiculesApp.urls') ),
+    path('offre/',include('OffresApp.urls') )
 ]

@@ -40,12 +40,6 @@ class ExpeditionListView( ListView ):
     template_name="expedition/list.html"
     context_object_name = 'expeditions'
 
-class ExpeditionDeleteView( DeleteView ):
-    model=Expedition
-    template_name='expedition/delete.html'
-    context_object_name='expedition'
-    success_url = reverse_lazy('expedition:list_Expeditions')
-
 class ExpeditionCreateView( CreateView ):
     model = Expedition
     template_name = 'expedition/form.html'
@@ -57,3 +51,9 @@ class ExpeditionUpdateView( UpdateView ):
     template_name = 'expedition/form.html'
     success_url = reverse_lazy('expedition:listcbv')
     form_class = ExpeditionForm # this is the form that will be used to update the expedition
+
+class ExpeditionDeleteView( DeleteView ):
+    model=Expedition
+    template_name='expedition/delete.html'
+    context_object_name='expedition'
+    success_url = reverse_lazy('expedition:list_Expeditions')

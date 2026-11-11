@@ -45,7 +45,12 @@ class OffresAdmin(admin.ModelAdmin):
     date_hierarchy = 'date_proposition'
     list_per_page = 25
     autocomplete_fields = ('expedition', 'transporteur', 'vehicule')
-    readonly_fields = ('date_proposition', 'created_at', 'updated_at')
+    readonly_fields = (
+        'statut_colore',
+        'date_proposition',
+        'created_at',
+        'updated_at',
+    )
     
     fieldsets = (
         ("Détails de l'offre", {
@@ -60,6 +65,8 @@ class OffresAdmin(admin.ModelAdmin):
     )
 
     def statut_colore(self,obj):
+        if obj is None:
+            return '-'
         couleurs = {
             'proposee': '#F0AD4E',
             'acceptee': '#5CB85C',
