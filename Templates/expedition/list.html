@@ -3,20 +3,53 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>i am in the right file</title>
+    <title>Liste des expéditions</title>
 </head>
 <body>
-     
-    <ul>
-        {% for expedition in expeditions %}
-        <li> 
-            
-            <a>
-                
-                 {{ expedition.reference }} - {{ expedition.entreprise }}  
-            </a>
-        </li>
-        {% endfor %}
-    </ul>
+    <h1>Liste des expéditions</h1>
+
+    <p>
+        <a href="{% url 'expedition:createview' %}">Créer une expédition</a>
+    </p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Référence</th>
+                <th>Départ</th>
+                <th>Arrivée</th>
+                <th>Poids (kg)</th>
+                <th>Date souhaitée</th>
+                <th>Entreprise</th>
+                <th>Statut</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for expedition in expeditions %}
+            <tr>
+                <td>{{ expedition.reference }}</td>
+                <td>{{ expedition.ville_depart }}</td>
+                <td>{{ expedition.ville_arrivee }}</td>
+                <td>{{ expedition.poids_kg }}</td>
+                <td>{{ expedition.date_souhaitee }}</td>
+                <td>{{ expedition.entreprise }}</td>
+                <td>{{ expedition.get_statut_display }}</td>
+                <td>
+                    <form method="get" action="{% url 'expedition:updateview' expedition.pk %}">
+                        <button type="submit">Modifier</button>
+                    </form>
+                    <form method="get" action="{% url 'expedition:deleteview' expedition.pk %}">
+                        <button type="submit">Supprimer</button>
+                    </form>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="8">Aucune expédition trouvée.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 </body>
 </html>

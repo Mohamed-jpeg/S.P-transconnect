@@ -6,10 +6,12 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>Supprimer  expéditions  {{expedition }}</h1>
+    <h1>Confirmer la suppression</h1>
+    <p>Voulez-vous vraiment supprimer l'expédition {{ expedition }} ?</p>
     <form method="post">
         {% csrf_token %}
         <button type="submit">Confirmer</button>
+        <a href="{% url 'expedition:list_Expeditions' %}">Annuler</a>
     </form>
 </body>
 </html>
