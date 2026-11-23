@@ -137,3 +137,7 @@ MAILERS = {
 }
 
 AUTH_USER_MODEL = 'EntreprisesApp.Utilisateur'
+
+LOGIN_URL = 'entreprise:Login_Entreprise'
+LOGIN_REDIRECT_URL = 'entreprise:home'
+LOGOUT_REDIRECT_URL = 'entreprise:Login_Entreprise'

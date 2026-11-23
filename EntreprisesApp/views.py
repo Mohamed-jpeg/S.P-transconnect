@@ -26,3 +26,38 @@ class EntrepriseDeleteView( DeleteView ):
     template_name = 'entreprise/delete.html'
     context_object_name='entreprise'
     success_url = reverse_lazy('entreprise:List_Entreprises')
+
+class HomeView( ListView ):
+    model=Entreprise
+    template_name='entreprise/home.html'
+    context_object_name = "entreprises"
+
+
+
+
+
+
+
+class Inscription(CreateView):
+    model = Utilisateur
+    form_class = UtilisateurCreationForm
+    template_name = 'inscription.html'
+    success_url = reverse_lazy('login')  
+
+class UtilisateurUpdateView(UpdateView):
+    model = Utilisateur
+    form_class = UtilisateurChangeForm
+    template_name = 'utilisateur_update.html'
+    success_url = reverse_lazy('entreprise:entreprise_list')
+
+class UtilisateurDetailView(DetailView):
+    model = Utilisateur
+    template_name = 'utilisateur_detail.html'
+    success_url = reverse_lazy('entreprise:entreprise_list')
+    context_object_name = 'utilisateur'
+
+class UtilisateurDeleteView(DeleteView):
+    model = Utilisateur
+    template_name = 'utilisateur_delete.html'
+    success_url = reverse_lazy('entreprise:entreprise_list')
+    context_object_name = 'utilisateur'
