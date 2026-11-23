@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My profile</title>
+</head>
+<body>
+    <h2>Your profile</h2>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Save changes</button>
+    </form>
+
+    <p>
+        <a href="{% url 'entreprise:User_Update' %}">Change password</a> |
+        <a href="{% url 'entreprise:account_delete' %}">Delete account</a>
+    </p>
+</body>
+</html>

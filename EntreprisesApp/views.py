@@ -1,8 +1,13 @@
 from django.shortcuts import render
 from django.views.generic import CreateView, ListView, DetailView, DeleteView, UpdateView
 from django.urls import reverse_lazy
-from .models import Entreprise
-from .forms import EntrepriseForm
+from .models import Entreprise , Utilisateur
+from .forms import EntrepriseForm , UtulisateurForm
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth import get_user_model, logout
+
+
+
 # Create your views here.
 class EntrepriseListView( ListView ):
     model=Entreprise
@@ -40,24 +45,29 @@ class HomeView( ListView ):
 
 class Inscription(CreateView):
     model = Utilisateur
-    form_class = UtilisateurCreationForm
-    template_name = 'inscription.html'
-    success_url = reverse_lazy('login')  
+    form_class = UtulisateurForm
+    template_name = 'entreprise/inscription.html'
+    success_url = reverse_lazy('entreprise:login')  
 
-class UtilisateurUpdateView(UpdateView):
-    model = Utilisateur
-    form_class = UtilisateurChangeForm
-    template_name = 'utilisateur_update.html'
-    success_url = reverse_lazy('entreprise:entreprise_list')
+class ProfileUpdateView(LoginRequiredMixin, UpdateView):
+    model = get_user_model()
+    fields = ['first_name', 'last_name', 'email']
+    template_name = 'entreprise/profile.html'
+    success_url = reverse_lazy('entreprise:profile')
 
-class UtilisateurDetailView(DetailView):
-    model = Utilisateur
-    template_name = 'utilisateur_detail.html'
-    success_url = reverse_lazy('entreprise:entreprise_list')
-    context_object_name = 'utilisateur'
+    def get_object(self, queryset=None):
+        return self.request.user
 
-class UtilisateurDeleteView(DeleteView):
-    model = Utilisateur
-    template_name = 'utilisateur_delete.html'
-    success_url = reverse_lazy('entreprise:entreprise_list')
-    context_object_name = 'utilisateur'
+class AccountDeleteView(LoginRequiredMixin, DeleteView):
+    model = get_user_model()
+    template_name = 'entreprise/confirm_delete.html'
+    success_url = reverse_lazy('entreprise:home')
+
+    def get_object(self, queryset=None):
+        return self.request.user
+
+    def form_valid(self, form):
+        user = self.object
+        logout(self.request)  # log out first so the session doesn't point to a deleted user
+        user.delete()
+        return HttpResponseRedirect(self.get_success_url())
